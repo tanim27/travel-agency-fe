@@ -1,4 +1,3 @@
-'use client'
 import { CheckCircle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -199,7 +198,7 @@ export const About = () => {
 							<p className='mt-3 text-gray-700 italic'>
 								&quot;{testimonial.review}
 							</p>
-							<h3 className='mt-2 font-semibold'>{testimonial.name}</h3>
+							<h3 className='mt-2 font-bold'>{testimonial.name}</h3>
 						</div>
 					))}
 				</div>

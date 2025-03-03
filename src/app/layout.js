@@ -3,12 +3,6 @@ import Header from '@/components/shared/Header/Header'
 import '@/styles/globals.css'
 import { FaWhatsapp } from 'react-icons/fa'
 
-export const metadata = {
-	title: 'Travel Agency',
-	description:
-		'This is a simple travel agency app created by Abdullah Al Mahmud',
-}
-
 export default function RootLayout({ children }) {
 	return (
 		<html lang='en'>
@@ -16,7 +10,7 @@ export default function RootLayout({ children }) {
 				<Header />
 				<main className=''>{children}</main>
 				<a
-					href='tel:01629358838'
+					href='https://api.whatsapp.com/send?phone=8801621375705&text=Hello%2C%20I%20am%20interested%20in%20your%20services.'
 					target='_blank'
 					className='fixed bottom-8 right-8 p-4 z-50 bg-green-500 hover:bg-green-600 rounded-full shadow-xl text-white text-3xl transition duration-300'
 				>

@@ -82,13 +82,13 @@ const Contact = () => {
 							<div className='space-y-4 text-gray-600'>
 								{/* Phone */}
 								<a
-									href='tel:123-456-7890'
+									href='tel:8801621375705'
 									className='flex items-center space-x-3 group hover:text-[#00677A] transition-all transform-300'
 								>
 									<div className='p-3 bg-sky-100 rounded-full group-hover:bg-sky-200 transition-all transform-300'>
 										<FaPhone className='text-[#00879E] group-hover:text-[#00677A] w-5 h-5' />
 									</div>
-									<p>Phone: 123-456-7890</p>
+									<p>Phone: 8801621375705</p>
 								</a>
 
 								{/* Email */}
