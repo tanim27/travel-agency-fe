@@ -82,23 +82,22 @@ export const Home = () => {
 
 	return (
 		<div className='pt-16'>
-			{/* Hero Section */}
-			<section className='relative h-[500px] flex items-center justify-center overflow-hidden'>
-				<video
-					className='absolute top-0 left-0 w-full h-full object-cover'
-					autoPlay
-					loop
-					muted
-					playsInline
-				>
-					<source
-						src='/videos/background2.mp4'
-						type='video/mp4'
+			<section className='relative h-[500px] flex items-center justify-center'>
+				{/* Background Image */}
+				<div className='absolute inset-0 w-full h-full'>
+					<Image
+						src='/images/background/background.jpg'
+						alt='Travel Background'
+						layout='fill'
+						objectFit='cover'
+						priority
 					/>
-					Your browser does not support the video tag.
-				</video>
-				<div className='absolute inset-0 bg-black/50'></div>
-				<div className='relative text-center text-white z-10'>
+					{/* Overlay */}
+					<div className='absolute inset-0 bg-black/50'></div>
+				</div>
+
+				{/* Content */}
+				<div className='text-center text-white z-10'>
 					<h1 className='text-4xl md:text-6xl font-bold'>Explore The World</h1>
 					<p className='mt-2 text-lg'>
 						Discover your next adventure with TravelGo.
@@ -113,6 +112,7 @@ export const Home = () => {
 					</Link>
 				</div>
 			</section>
+
 			{/* Popular Destinations (Auto Slider) */}
 			<section className='py-12 px-4 container mx-auto'>
 				<h2 className='font-bold text-4xl text-gray-700 text-center mb-12'>
