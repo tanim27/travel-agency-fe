@@ -22,7 +22,7 @@ export const Home = () => {
 
 	return (
 		<div className='bg-gray-100 pt-16'>
-			<section className='relative h-[500px] flex items-center justify-center mb-24'>
+			<section className='relative h-screen flex items-center justify-center'>
 				{/* Background Image */}
 				<div className='absolute inset-0 w-full h-screen'>
 					<Image
