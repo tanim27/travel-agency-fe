@@ -1,7 +1,7 @@
 import { Home } from '@/components/Home/Home'
 
 export const metadata = {
-	title: 'TravelGo | Home',
+	title: 'Hijrat Air Travels | Home',
 	description:
 		'This is a simple travel agency app created by Abdullah Al Mahmud',
 }

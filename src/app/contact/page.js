@@ -1,8 +1,8 @@
 import Contact from '@/components/Contact/Contact'
 
 export const metadata = {
-	title: 'TravelGo | Contact',
-	description: 'This is the contact page of TravelGo',
+	title: 'Hijrat Air Travels | Contact',
+	description: 'This is the contact page of Hijrat Air Travels',
 }
 const page = () => {
 	return (

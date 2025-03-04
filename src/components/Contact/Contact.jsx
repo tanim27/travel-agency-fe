@@ -1,13 +1,81 @@
 'use client'
 
-import { FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa'
+import emailjs from '@emailjs/browser'
+import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
+import { useState } from 'react'
+import { FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa'
+import { IoCall } from 'react-icons/io5'
 
 const Contact = () => {
+	const { enqueueSnackbar } = useSnackbar()
+	const router = useRouter()
+
+	const [formData, setFormData] = useState({
+		name: '',
+		email: '',
+		message: '',
+	})
+
+	const [errors, setErrors] = useState({})
+
 	const handleMouseMove = (e) => {
 		const btn = e.currentTarget
 		const rect = btn.getBoundingClientRect()
 		btn.style.setProperty('--x', `${e.clientX - rect.left}px`)
 		btn.style.setProperty('--y', `${e.clientY - rect.top}px`)
+	}
+
+	const handleChange = (e) => {
+		const { name, value } = e.target
+		setFormData((prevData) => ({ ...prevData, [name]: value }))
+		setErrors((prevErrors) => ({ ...prevErrors, [name]: '' })) // Clear error on change
+	}
+
+	const validateForm = () => {
+		let tempErrors = {}
+		if (!formData.name.trim()) tempErrors.name = 'Name is required'
+		if (!formData.email.trim()) {
+			tempErrors.email = 'Email is required'
+		} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+			tempErrors.email = 'Invalid email format'
+		}
+		if (!formData.message.trim()) tempErrors.message = 'Message is required'
+		setErrors(tempErrors)
+		return Object.keys(tempErrors).length === 0
+	}
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+
+		if (!validateForm()) return
+
+		const serviceID = 'service_ug3nf3g'
+		const templateID = 'template_xczc7zg'
+		const userID = 'kNCkb7_AiOtjrP6XH'
+
+		const emailData = {
+			...formData,
+			to_name: 'Hijrat Air Travels', // Your business name (recipient)
+			from_name: formData.name, // User's name (sender)
+			from_email: formData.email, // User's email address (so you can reply)
+			reply_to: formData.email, // User's email address (so you can reply)
+		}
+
+		emailjs.send(serviceID, templateID, emailData, userID).then(
+			(response) => {
+				enqueueSnackbar('Your message has been sent successfully!', {
+					variant: 'success',
+				})
+				setFormData({ name: '', email: '', message: '' }) // Reset form
+				router.push('/')
+			},
+			(error) => {
+				enqueueSnackbar('Failed to send the message. Please try again.', {
+					variant: 'error',
+				})
+			},
+		)
 	}
 
 	return (
@@ -18,7 +86,10 @@ const Contact = () => {
 				</h1>
 				<div className='grid grid-cols-1 md:grid-cols-2 gap-8 bg-white rounded-lg shadow-lg p-8'>
 					{/* Contact Form */}
-					<form className='space-y-6'>
+					<form
+						className='space-y-6'
+						onSubmit={handleSubmit}
+					>
 						<div>
 							<label
 								htmlFor='name'
@@ -29,10 +100,19 @@ const Contact = () => {
 							<input
 								type='text'
 								id='name'
+								name='name'
 								placeholder='Your Name'
-								className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00677A] focus:border-transparent transition-all transform-300 placeholder-gray-400'
+								value={formData.name}
+								onChange={handleChange}
+								className={`w-full px-4 py-3 border ${
+									errors.name ? 'border-red-500' : 'border-gray-300'
+								} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00677A] focus:border-transparent transition-all transform-300 placeholder-gray-400`}
 							/>
+							{errors.name && (
+								<p className='text-red-500 text-sm mt-1'>{errors.name}</p>
+							)}
 						</div>
+
 						<div>
 							<label
 								htmlFor='email'
@@ -43,10 +123,19 @@ const Contact = () => {
 							<input
 								type='email'
 								id='email'
+								name='email'
 								placeholder='Your Email'
-								className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00677A] focus:border-transparent transition-all transform-300 placeholder-gray-400'
+								value={formData.email}
+								onChange={handleChange}
+								className={`w-full px-4 py-3 border ${
+									errors.email ? 'border-red-500' : 'border-gray-300'
+								} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00677A] focus:border-transparent transition-all transform-300 placeholder-gray-400`}
 							/>
+							{errors.email && (
+								<p className='text-red-500 text-sm mt-1'>{errors.email}</p>
+							)}
 						</div>
+
 						<div>
 							<label
 								htmlFor='message'
@@ -56,12 +145,20 @@ const Contact = () => {
 							</label>
 							<textarea
 								id='message'
+								name='message'
 								rows='5'
 								placeholder='Your Message'
-								className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00677A] focus:border-transparent transition-all transform-300 placeholder-gray-400'
+								value={formData.message}
+								onChange={handleChange}
+								className={`w-full px-4 py-3 border ${
+									errors.message ? 'border-red-500' : 'border-gray-300'
+								} rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00677A] focus:border-transparent transition-all transform-300 placeholder-gray-400`}
 							/>
+							{errors.message && (
+								<p className='text-red-500 text-sm mt-1'>{errors.message}</p>
+							)}
 						</div>
-						{/* Centered Send Button */}
+
 						<div className='flex justify-center'>
 							<button
 								type='submit'
@@ -81,51 +178,69 @@ const Contact = () => {
 							</h2>
 							<div className='space-y-4 text-gray-600'>
 								{/* Phone */}
-								<a
-									href='tel:8801621375705'
-									className='flex items-center space-x-3 group hover:text-[#00677A] transition-all transform-300'
-								>
+								<div className='flex items-center space-x-3 group transition-all transform-300'>
 									<div className='p-3 bg-sky-100 rounded-full group-hover:bg-sky-200 transition-all transform-300'>
-										<FaPhone className='text-[#00879E] group-hover:text-[#00677A] w-5 h-5' />
+										<IoCall className='text-[#00879E] group-hover:text-[#00677A] w-5 h-5' />
 									</div>
-									<p>Phone: 8801621375705</p>
-								</a>
+									<a href='tel:8801813298910'>
+										<p className='group-hover:text-[#00677A] transition-all transform-300 cursor-pointer'>
+											Phone: 01813298910
+										</p>
+									</a>
+								</div>
+
+								<div className='flex items-center space-x-3 group transition-all transform-300'>
+									<div className='p-3 bg-sky-100 rounded-full group-hover:bg-sky-200 transition-all transform-300'>
+										<IoCall className='text-[#00879E] group-hover:text-[#00677A] w-5 h-5' />
+									</div>
+									<a href='tel:8801678170489'>
+										<p className='group-hover:text-[#00677A] transition-all transform-300 cursor-pointer'>
+											Phone: 01678170489
+										</p>
+									</a>
+								</div>
 
 								{/* Email */}
-								<a
-									href='mailto:info@example.com'
-									className='flex items-center space-x-3 group hover:text-[#00677A] transition-all transform-300'
-								>
+								<div className='flex items-center space-x-3 group transition-all transform-300'>
 									<div className='p-3 bg-sky-100 rounded-full group-hover:bg-sky-200 transition-all transform-300'>
 										<FaEnvelope className='text-[#00879E] group-hover:text-[#00677A] w-5 h-5' />
 									</div>
-									<p>Email: info@example.com</p>
-								</a>
+									<a href='mailto:hijratairweb@gmail.com'>
+										<p className='group-hover:text-[#00677A] transition-all transform-300'>
+											Email: hijratairweb@gmail.com
+										</p>
+									</a>
+								</div>
 
 								{/* Address */}
-								<a
-									href='https://www.google.com/maps/search/?api=1&query=123+Main+St,+City,+State,+Zip'
-									target='_blank'
-									rel='noopener noreferrer'
-									className='flex items-center space-x-3 group hover:text-[#00677A] transition-all transform-300'
-								>
+								<div className='flex items-center space-x-3 group transition-all transform-300'>
 									<div className='p-3 bg-sky-100 rounded-full group-hover:bg-sky-200 transition-all transform-300'>
 										<FaMapMarkerAlt className='text-[#00879E] group-hover:text-[#00677A] w-5 h-5' />
 									</div>
-									<p>Address: 123 Main St, City, State, Zip</p>
-								</a>
+									<a
+										href='https://maps.app.goo.gl/LpcTfENEU2PQdMDY6'
+										target='_blank'
+										rel='noopener noreferrer'
+									>
+										<p className='group-hover:text-[#00677A] transition-all transform-300'>
+											65/2/1, Paramount Heights, Box Culvert Road, Purana
+											Paltun, Dhaka-1000.
+										</p>
+									</a>
+								</div>
 							</div>
 						</div>
 
 						{/* Map */}
 						<div className='rounded-lg overflow-hidden shadow-lg'>
 							<iframe
-								src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.831396447892!2d-74.00601598459156!3d40.71277577933163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259abde1c3fd3%3A0x6c22b69ec3377a62!2sNew%20York%2C%20NY%2010001!5e0!3m2!1sen!2sus!4v1626359686390!5m2!1sen!2sus'
-								width='100%'
-								height='300'
+								src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.4454504787764!2d90.4119444740997!3d23.731489589504445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b84f8fd87b8f%3A0xf7ca84a79c284559!2zUEFSQU1PVU5UIEhFSUdIVFMv4Kaq4Ka-4Kah4Ka84Ka-4Kau4Ka-4KaJ4Kao4KeN4KafIOCmueCmvuCmh-Cmn-CmuA!5e0!3m2!1sen!2sbd!4v1741018133451!5m2!1sen!2sbd'
+								width='600'
+								height='450'
 								style={{ border: 0 }}
-								allowFullScreen
+								allowFullScreen=''
 								loading='lazy'
+								referrerPolicy='no-referrer-when-downgrade'
 								className='rounded-lg'
 							></iframe>
 						</div>

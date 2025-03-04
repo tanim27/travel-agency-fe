@@ -1,8 +1,8 @@
-import { About } from '@/components/About/About'
+import About from '@/components/About/About'
 
 export const metadata = {
-	title: 'TravelGo | About',
-	description: 'This is the about page of TravelGo',
+	title: 'Hijrat Air Travels | About',
+	description: 'This is the about page of Hijrat Air Travels',
 }
 const page = () => {
 	return (

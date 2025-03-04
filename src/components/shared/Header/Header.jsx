@@ -1,21 +1,19 @@
 'use client'
-import { Menu, X } from 'lucide-react' // Install lucide-react for icons
 import Link from 'next/link'
 import { useState } from 'react'
+import { GiCrossedBones } from 'react-icons/gi'
+import { LuMenu } from 'react-icons/lu'
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
-		<header className='bg-white shadow-md fixed top-0 left-0 w-full z-50'>
+		<header className='bg-white shadow-lg fixed top-0 left-0 w-full z-50'>
 			<div className='container mx-auto px-4 md:px-8 flex justify-between items-center h-16'>
 				{/* Logo */}
-				<Link
-					href='/'
-					className='text-4xl font-bold text-[#00879E]'
-				>
-					TravelGo
-				</Link>
+				<div className='text-3xl md:text-4xl font-bold text-[#00879E]'>
+					<Link href='/'>Hijrat Air</Link>
+				</div>
 
 				{/* Desktop Navigation */}
 				<nav className='hidden md:flex space-x-8'>
@@ -56,12 +54,18 @@ const Header = () => {
 					className='md:hidden'
 					onClick={() => setIsOpen(!isOpen)}
 				>
-					{isOpen ? <X size={24} /> : <Menu size={24} />}
+					{isOpen ? <GiCrossedBones size={24} /> : <LuMenu size={32} />}
 				</button>
 
 				{/* Mobile Menu */}
 				{isOpen && (
-					<div className='transition-all duration-200 absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 md:hidden'>
+					<div
+						className={`absolute top-16 left-0 w-full bg-white shadow-md flex flex-col items-center py-4 md:hidden transition-all duration-300 transform ${
+							isOpen
+								? 'opacity-100 scale-y-100'
+								: 'opacity-0 scale-y-0 pointer-events-none'
+						}`}
+					>
 						<Link
 							href='/'
 							className='transition-all duration-200 text-lg text-gray-700 hover:text-[#00677A] py-2'
